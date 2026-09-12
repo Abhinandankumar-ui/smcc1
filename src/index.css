@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#070a14] text-slate-100 font-sans min-h-screen overflow-x-hidden;
+    background-image: 
+      radial-gradient(ellipse 90% 65% at 50% -12%, rgba(99, 102, 241, 0.22), transparent 70%),
+      radial-gradient(circle 850px at 92% 28%, rgba(0, 240, 255, 0.16), transparent 60%),
+      radial-gradient(circle 750px at 8% 62%, rgba(217, 70, 239, 0.15), transparent 60%),
+      radial-gradient(circle 700px at 50% 98%, rgba(245, 158, 11, 0.12), transparent 65%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  code, pre, .font-tech {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Energetic Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #070a14;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00f0ff, #6366f1, #d946ef, #f59e0b);
+  border-radius: 9999px;
+  border: 2px solid #070a14;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #38bdf8, #818cf8, #f472b6);
+}
+
+/* Glassmorphism System with Energetic Luminous Undertones */
+.glass {
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.glass-nav {
+  background: rgba(7, 10, 20, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.50);
+  box-shadow: 0 16px 40px -10px rgba(0, 240, 255, 0.25), 0 0 25px -4px rgba(99, 102, 241, 0.25);
+  transform: translateY(-4px);
+}
+
+.glass-card-purple:hover {
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 16px 40px -10px rgba(168, 85, 247, 0.30), 0 0 25px -4px rgba(236, 72, 153, 0.25);
+  transform: translateY(-4px);
+}
+
+.glass-card-amber:hover {
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow: 0 16px 40px -10px rgba(245, 158, 11, 0.30), 0 0 25px -4px rgba(239, 68, 68, 0.25);
+  transform: translateY(-4px);
+}
+
+.glass-input {
+  background: rgba(11, 17, 32, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.glass-input:focus {
+  border-color: #00f0ff;
+  box-shadow: 0 0 18px -2px rgba(0, 240, 255, 0.45);
+}
+
+/* Universal Select & Option Dropdown Theming for Dark Mode */
+select,
+.glass-input select {
+  background-color: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+select option {
+  background-color: #0b1120 !important;
+  color: #f8fafc !important;
+  padding: 10px 14px;
+}
+
+select option:checked,
+select option:hover,
+select option:focus {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Cyber Grid Pattern with Energetic Fade */
+.tech-grid {
+  background-size: 38px 38px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 75% 60% at 50% 15%, #000 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 15%, #000 70%, transparent 100%);
+}
+
+/* High-Energy Gradient Presets */
+.gradient-text-electric {
+  background: linear-gradient(135deg, #00f0ff 0%, #38bdf8 35%, #818cf8 70%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-fire {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 45%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-quantum {
+  background: linear-gradient(135deg, #00f0ff 0%, #6366f1 50%, #d946ef 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-aurora {
+  background: linear-gradient(135deg, #34d399 0%, #06b6d4 50%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Energetic Action Buttons */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #0284c7 0%, #6366f1 45%, #d946ef 100%);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 25px -4px rgba(99, 102, 241, 0.50);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-gradient:hover {
+  box-shadow: 0 12px 32px -2px rgba(217, 70, 239, 0.60);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-cyan-gradient {
+  background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+  color: #070a14;
+  font-weight: 800;
+  box-shadow: 0 8px 25px -4px rgba(0, 240, 255, 0.50);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-cyan-gradient:hover {
+  box-shadow: 0 12px 32px -2px rgba(0, 240, 255, 0.70);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-amber-gradient {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 25px -4px rgba(245, 158, 11, 0.50);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-amber-gradient:hover {
+  box-shadow: 0 12px 32px -2px rgba(245, 158, 11, 0.70);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Glowing Neon Pills & Accents */
+.badge-cyan {
+  background: rgba(0, 240, 255, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  box-shadow: 0 0 15px -2px rgba(0, 240, 255, 0.20);
+}
+
+.badge-purple {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 15px -2px rgba(168, 85, 247, 0.20);
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 15px -2px rgba(245, 158, 11, 0.20);
+}
+
+.badge-emerald {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: 0 0 15px -2px rgba(16, 185, 129, 0.20);
+}
