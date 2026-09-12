@@ -9,7 +9,7 @@ export default function Home(){
     <div className='absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050510]'/>
     <div className='max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center relative'>
       <motion.div initial={{opacity:0,x:-30}} animate={{opacity:1,x:0}} transition={{duration:0.8}}>
-        <p className='inline-flex glass px-4 py-1.5 rounded-full text-xs tracking-widest text-violet-300'>● ANTIGRAVITY PREMIUM CLUB</p>
+        <p className='inline-flex glass px-4 py-1.5 rounded-full text-xs tracking-widest text-violet-300'>● Welcome to all of you in SMC club</p>
         <h1 className='text-6xl md:text-7xl font-black leading-[0.9] mt-6'>Build.<br/><span className='text-gradient'>Learn.</span><br/>Lead.</h1>
         <p className='mt-6 text-white/60 text-lg leading-relaxed'>India's most dynamic student club — premium events, real projects, elit community. Join & levitate your career.</p>
         <div className='flex gap-4 mt-8'><Link to='/join' className='premium-gradient px-8 py-4 rounded-full font-bold shadow-xl shadow-violet-600/25'>Join Our Team →</Link><Link to='/about' className='glass px-8 py-4 rounded-full font-semibold'>Explore →</Link></div>
