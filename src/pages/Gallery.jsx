@@ -27,6 +27,7 @@ export default function Gallery() {
     'Club Activities'
   ];
 
+  // Load gallery data
   useEffect(() => {
     axios
       .get('/api/gallery')
@@ -34,19 +35,28 @@ export default function Gallery() {
         setItems(res.data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Gallery loading error:', error);
         setLoading(false);
       });
   }, []);
 
   const filteredItems = items.filter((item) => {
     const isVideo =
-      item.mediaType === 'video' || !!item.videoUrl;
+      item.mediaType === 'video' ||
+      !!item.videoUrl;
 
-    if (mediaFilter === 'image' && isVideo) return false;
-    if (mediaFilter === 'video' && !isVideo) return false;
+    if (mediaFilter === 'image' && isVideo) {
+      return false;
+    }
 
-    if (activeCategory === 'All') return true;
+    if (mediaFilter === 'video' && !isVideo) {
+      return false;
+    }
+
+    if (activeCategory === 'All') {
+      return true;
+    }
 
     return item.category === activeCategory;
   });
@@ -100,7 +110,9 @@ export default function Gallery() {
             📷 Photos (
               {
                 items.filter(
-                  (i) => i.mediaType !== 'video' && !i.videoUrl
+                  (i) =>
+                    i.mediaType !== 'video' &&
+                    !i.videoUrl
                 ).length
               }
               )
@@ -117,7 +129,9 @@ export default function Gallery() {
             🎥 Videos (
               {
                 items.filter(
-                  (i) => i.mediaType === 'video' || !!i.videoUrl
+                  (i) =>
+                    i.mediaType === 'video' ||
+                    !!i.videoUrl
                 ).length
               }
               )
@@ -150,13 +164,17 @@ export default function Gallery() {
       {loading ? (
 
         <div className='text-center py-20 text-cyan-400 font-tech text-xs'>
+
           <span className='inline-block w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mr-2' />
+
           Loading gallery archives...
+
         </div>
 
       ) : filteredItems.length === 0 ? (
 
         <div className='text-center py-16 glass rounded-3xl p-8 border border-white/10 max-w-md mx-auto'>
+
           <p className='text-lg font-bold text-white font-display'>
             No media found in this category.
           </p>
@@ -164,6 +182,7 @@ export default function Gallery() {
           <p className='text-xs text-slate-400 mt-1'>
             Check back soon for upcoming lab photos and demo videos!
           </p>
+
         </div>
 
       ) : (
@@ -172,26 +191,29 @@ export default function Gallery() {
 
           {filteredItems.map((item) => {
 
+            /* Determine media type */
             const isVideo =
-              item.mediaType === 'video' || !!item.videoUrl;
+              item.mediaType === 'video' ||
+              !!item.videoUrl;
 
+            /* YouTube ID */
             const ytId =
               isVideo && item.videoUrl
                 ? getYouTubeId(item.videoUrl)
                 : null;
 
-            /*
-             * IMPORTANT:
-             * MongoDB me image `/uploads/filename.jpg`
-             * stored hai.
-             *
-             * getImageUrl() ise:
-             * https://smcclub-1.onrender.com/uploads/filename.jpg
-             * me convert karega.
-             */
-            const displayThumbnail = item.image
+            /* Image URL */
+            const imageUrl = item.image
               ? getImageUrl(item.image)
-              : ytId
+              : '';
+
+            /* Video URL */
+            const videoUrl = item.videoUrl
+              ? getImageUrl(item.videoUrl)
+              : '';
+
+            /* YouTube thumbnail */
+            const youtubeThumbnail = ytId
               ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
               : '';
 
@@ -203,32 +225,73 @@ export default function Gallery() {
                 className='group relative rounded-3xl overflow-hidden glass-card aspect-[4/3] bg-slate-950 cursor-pointer border border-white/10 hover:border-cyan-400/50 hover:shadow-[0_12px_35px_-8px_rgba(0,240,255,0.25)] transition-all duration-300'
               >
 
-                {/* Media representation */}
-                {displayThumbnail ? (
+                {/* ================================================== */}
+                {/* MEDIA PREVIEW */}
+                {/* ================================================== */}
 
-                  <img
-                    src={displayThumbnail}
-                    alt={item.title || 'SMC Club'}
-                    className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500'
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
+                {isVideo ? (
 
-                ) : isVideo && item.videoUrl ? (
+                  /* VIDEO */
+                  ytId ? (
 
-                  <video
-                    src={getImageUrl(item.videoUrl)}
-                    preload='metadata'
-                    muted
-                    className='h-full w-full object-cover'
-                  />
+                    /* YouTube Video Thumbnail */
+                    <img
+                      src={youtubeThumbnail}
+                      alt={item.title || 'SMC Club Video'}
+                      className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500'
+                    />
+
+                  ) : videoUrl ? (
+
+                    /* Uploaded Local Video */
+                    <video
+                      src={videoUrl}
+                      preload='metadata'
+                      muted
+                      playsInline
+                      className='h-full w-full object-cover bg-black'
+                      onError={(e) => {
+                        console.error(
+                          'Video preview failed:',
+                          videoUrl
+                        );
+                      }}
+                    />
+
+                  ) : (
+
+                    <div className='h-full w-full flex items-center justify-center bg-slate-900 text-slate-500 font-tech text-xs'>
+                      Video Preview
+                    </div>
+
+                  )
 
                 ) : (
 
-                  <div className='h-full w-full flex items-center justify-center bg-slate-900 text-slate-500 font-tech text-xs'>
-                    Media Preview
-                  </div>
+                  /* IMAGE */
+                  imageUrl ? (
+
+                    <img
+                      src={imageUrl}
+                      alt={item.title || 'SMC Club'}
+                      className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500'
+                      onError={(e) => {
+                        console.error(
+                          'Image preview failed:',
+                          imageUrl
+                        );
+
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+
+                  ) : (
+
+                    <div className='h-full w-full flex items-center justify-center bg-slate-900 text-slate-500 font-tech text-xs'>
+                      Media Preview
+                    </div>
+
+                  )
 
                 )}
 
@@ -262,8 +325,11 @@ export default function Gallery() {
 
                       <span className='font-tech text-[9px] text-slate-300 bg-slate-950/70 backdrop-blur px-2 py-0.5 rounded-full border border-white/10'>
                         📅{' '}
+
                         {item.date
-                          ? new Date(item.date).toLocaleDateString(
+                          ? new Date(
+                              item.date
+                            ).toLocaleDateString(
                               'en-US',
                               {
                                 month: 'short',
@@ -272,12 +338,16 @@ export default function Gallery() {
                               }
                             )
                           : new Date(
-                              item.createdAt || Date.now()
-                            ).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
+                              item.createdAt ||
+                                Date.now()
+                            ).toLocaleDateString(
+                              'en-US',
+                              {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              }
+                            )}
                       </span>
 
                     </div>
@@ -326,7 +396,10 @@ export default function Gallery() {
 
       )}
 
-      {/* Lightbox / Video Player Modal */}
+      {/* ================================================== */}
+      {/* LIGHTBOX / VIDEO PLAYER MODAL */}
+      {/* ================================================== */}
+
       {lightboxItem && (
 
         <div
@@ -339,6 +412,7 @@ export default function Gallery() {
             className='relative max-w-4xl w-full glass-card rounded-3xl overflow-hidden border border-cyan-500/40 shadow-2xl shadow-cyan-500/20 p-4 sm:p-6'
           >
 
+            {/* Close Button */}
             <button
               onClick={() => setLightboxItem(null)}
               className='absolute top-4 right-4 w-9 h-9 rounded-full glass flex items-center justify-center text-slate-300 hover:text-white z-20'
@@ -354,11 +428,18 @@ export default function Gallery() {
                 !!lightboxItem.videoUrl;
 
               const ytId =
-                isVideo && lightboxItem.videoUrl
-                  ? getYouTubeId(lightboxItem.videoUrl)
+                isVideo &&
+                lightboxItem.videoUrl
+                  ? getYouTubeId(
+                      lightboxItem.videoUrl
+                    )
                   : null;
 
               if (isVideo) {
+
+                /* ============================= */
+                /* YOUTUBE VIDEO */
+                /* ============================= */
 
                 if (ytId) {
 
@@ -368,7 +449,10 @@ export default function Gallery() {
 
                       <iframe
                         src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
-                        title={lightboxItem.title}
+                        title={
+                          lightboxItem.title ||
+                          'SMC Club Video'
+                        }
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
                         allowFullScreen
                         className='w-full h-full border-0'
@@ -377,32 +461,59 @@ export default function Gallery() {
                     </div>
 
                   );
+
                 }
+
+                /* ============================= */
+                /* UPLOADED VIDEO */
+                /* ============================= */
+
+                const uploadedVideoUrl =
+                  getImageUrl(
+                    lightboxItem.videoUrl
+                  );
 
                 return (
 
-                  <div className='max-h-[70vh] rounded-2xl overflow-hidden bg-black flex items-center justify-center shadow-2xl'>
+                  <div className='relative w-full max-h-[70vh] rounded-2xl overflow-hidden bg-black flex items-center justify-center shadow-2xl'>
 
                     <video
-                      src={getImageUrl(lightboxItem.videoUrl)}
+                      src={uploadedVideoUrl}
                       controls
                       autoPlay
                       playsInline
+                      preload='metadata'
                       className='w-full max-h-[70vh] object-contain'
+                      onError={(e) => {
+                        console.error(
+                          'Uploaded video failed to load:',
+                          uploadedVideoUrl
+                        );
+                      }}
                     />
 
                   </div>
 
                 );
+
               }
+
+              /* ============================= */
+              /* IMAGE */
+              /* ============================= */
 
               return (
 
                 <div className='max-h-[70vh] rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center shadow-2xl'>
 
                   <img
-                    src={getImageUrl(lightboxItem.image)}
-                    alt={lightboxItem.title}
+                    src={getImageUrl(
+                      lightboxItem.image
+                    )}
+                    alt={
+                      lightboxItem.title ||
+                      'SMC Club'
+                    }
                     className='w-full h-full object-contain max-h-[70vh]'
                   />
 
@@ -412,6 +523,7 @@ export default function Gallery() {
 
             })()}
 
+            {/* Information */}
             <div className='pt-4 flex items-center justify-between'>
 
               <div>
@@ -444,21 +556,30 @@ export default function Gallery() {
                 <span>📅</span>
 
                 <span>
+
                   {lightboxItem.date
                     ? new Date(
                         lightboxItem.date
-                      ).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })
+                      ).toLocaleDateString(
+                        'en-US',
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        }
+                      )
                     : new Date(
-                        lightboxItem.createdAt || Date.now()
-                      ).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
+                        lightboxItem.createdAt ||
+                          Date.now()
+                      ).toLocaleDateString(
+                        'en-US',
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        }
+                      )}
+
                 </span>
 
               </span>
