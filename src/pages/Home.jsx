@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { getImageUrl } from '../utils/imageUrl';
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://smcclub-1.onrender.com';
 
 export default function Home() {
   const [featuredProjects, setFeaturedProjects] = useState([]);
@@ -14,9 +19,9 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
     Promise.allSettled([
-      axios.get('/api/settings'),
-      axios.get('/api/projects?limit=3'),
-      axios.get('/api/events')
+      axios.get(`${API_URL}/api/settings`),
+      axios.get(`${API_URL}/api/projects?limit=3`),
+      axios.get(`${API_URL}/api/events`)
     ]).then(([settingsRes, projectsRes, eventsRes]) => {
       if (settingsRes.status === 'fulfilled' && settingsRes.value?.data) {
         const d = settingsRes.value.data;
@@ -161,7 +166,9 @@ export default function Home() {
               {/* Visual Hardware Preview */}
               <div className='relative h-60 sm:h-64 rounded-2xl overflow-hidden bg-slate-950 border border-white/10 mb-4 group'>
                 <img
-                  src={featuredProjects[0]?.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
+                  src={featuredProjects[0]?.image
+                    ? getImageUrl(featuredProjects[0].image)
+                    : 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
                   alt={featuredProjects[0]?.name || 'Smart IoT Hardware'}
                   className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
                 />
@@ -335,7 +342,9 @@ export default function Home() {
             >
               <div className='h-52 overflow-hidden relative bg-slate-950'>
                 <img
-                  src={p.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
+                  src={p.image
+                      ? getImageUrl(p.image)
+                      : 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
                   alt={p.name}
                   className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500'
                 />
@@ -406,7 +415,9 @@ export default function Home() {
                   {/* Event Image Banner */}
                   <div className='h-48 overflow-hidden relative bg-slate-950'>
                     <img
-                      src={e.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
+                      src={e.image
+                        ? getImageUrl(e.image)
+                        : 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'}
                       alt={e.title}
                       className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500'
                     />
